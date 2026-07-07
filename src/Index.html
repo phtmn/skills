@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Cadastro - Google Antigravity</title>
+  
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      --accent-color: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.4);
+      --glass-bg: rgba(30, 41, 59, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Decorações flutuantes sutis (Antigravity Theme) */
+    .floating-blob {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+      animation: float-around 15s infinite alternate ease-in-out;
+    }
+    
+    .blob-1 { top: 10%; left: 10%; }
+    .blob-2 { bottom: 10%; right: 10%; animation-delay: -7s; }
+    
+    @keyframes float-around {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 30px) scale(1.1); }
+    }
+    
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 600px;
+      z-index: 1;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .glass-card:hover {
+      box-shadow: 0 25px 50px rgba(99, 102, 241, 0.15);
+    }
+    
+    .app-title {
+      font-weight: 800;
+      background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      font-size: 2.25rem;
+      text-align: center;
+    }
+    
+    .app-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      text-align: center;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+    
+    .form-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .form-control, .form-control:focus {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      transition: all 0.25s ease;
+    }
+    
+    .form-control::placeholder {
+      color: #64748b;
+    }
+    
+    .form-control:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+      outline: none;
+    }
+    
+    /* Upload customizado */
+    .custom-file-upload {
+      border: 2px dashed var(--glass-border);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.3);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+    }
+    
+    .custom-file-upload:hover {
+      border-color: var(--accent-color);
+      background: rgba(99, 102, 241, 0.05);
+    }
+    
+    .custom-file-upload i {
+      font-size: 2rem;
+      color: var(--accent-color);
+      transition: transform 0.3s ease;
+    }
+    
+    .custom-file-upload:hover i {
+      transform: translateY(-5px);
+    }
+    
+    .file-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+    
+    .file-preview {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      word-break: break-all;
+    }
+    
+    .btn-submit {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      padding: 0.9rem;
+      width: 100%;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+    
+    .btn-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+    }
+    
+    .btn-submit:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    
+    .btn-submit:disabled {
+      background: #334155;
+      color: #64748b;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+    
+    .alert-custom {
+      display: none;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .feedback-success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+    
+    .feedback-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="floating-blob blob-1"></div>
+  <div class="floating-blob blob-2"></div>
+
+  <div class="glass-card">
+    <h1 class="app-title">Cadastro Rápido</h1>
+    <p class="app-subtitle">Preencha as informações abaixo e envie diretamente para a nossa base.</p>
+    
+    <!-- Alertas de Feedback -->
+    <div id="alertFeedback" class="alert-custom"></div>
+    
+    <form id="cadastroForm" novalidate>
+      
+      <!-- Nome Completo -->
+      <div class="mb-4">
+        <label for="nome" class="form-label"><i class="fa-regular fa-user"></i> Nome Completo</label>
+        <input type="text" id="nome" name="nome" class="form-control" placeholder="Ex: João da Silva" required minlength="3">
+        <div class="invalid-feedback">Por favor, insira seu nome completo (mínimo de 3 caracteres).</div>
+      </div>
+      
+      <!-- Telefone (WhatsApp) -->
+      <div class="mb-4">
+        <label for="whatsapp" class="form-label"><i class="fa-brands fa-whatsapp"></i> Telefone (WhatsApp)</label>
+        <input type="tel" id="whatsapp" name="whatsapp" class="form-control" placeholder="Ex: (11) 99999-9999" required>
+        <div class="invalid-feedback">Por favor, insira um número de telefone celular válido.</div>
+      </div>
+      
+      <!-- Endereço -->
+      <div class="mb-4">
+        <label for="endereco" class="form-label"><i class="fa-solid fa-location-dot"></i> Endereço</label>
+        <textarea id="endereco" name="endereco" class="form-control" rows="3" placeholder="Rua, número, bairro, cidade..." required minlength="10"></textarea>
+        <div class="invalid-feedback">Por favor, preencha o endereço completo (mínimo de 10 caracteres).</div>
+      </div>
+      
+      <!-- Upload de Foto -->
+      <div class="mb-4">
+        <label class="form-label"><i class="fa-regular fa-image"></i> Enviar Foto</label>
+        <div class="custom-file-upload" id="fileUploadContainer">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span id="uploadText">Clique ou arraste a sua foto aqui</span>
+          <span class="text-xs text-muted" style="font-size: 0.75rem;">Formatos aceitos: JPG, JPEG, PNG (Máx 5MB)</span>
+          <input type="file" id="foto" name="foto" class="file-input" accept="image/*" required>
+        </div>
+        <div id="filePreview" class="file-preview"></div>
+        <div id="fileError" class="text-danger mt-1" style="font-size: 0.85rem; display: none;">O envio de uma foto de até 5MB é obrigatório.</div>
+      </div>
+      
+      <!-- Botão Enviar -->
+      <button type="submit" id="btnSubmit" class="btn-submit mt-4">
+        <span id="btnText">Enviar Cadastro</span>
+        <span id="btnSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+      </button>
+      
+    </form>
+  </div>
+
+  <!-- Bootstrap 5 Bundle JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const form = document.getElementById('cadastroForm');
+    const inputWhatsapp = document.getElementById('whatsapp');
+    const inputFoto = document.getElementById('foto');
+    const fileUploadContainer = document.getElementById('fileUploadContainer');
+    const uploadText = document.getElementById('uploadText');
+    const filePreview = document.getElementById('filePreview');
+    const fileError = document.getElementById('fileError');
+    
+    const btnSubmit = document.getElementById('btnSubmit');
+    const btnText = document.getElementById('btnText');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const alertFeedback = document.getElementById('alertFeedback');
+
+    // Máscara de Telefone (Formato Brasileiro)
+    inputWhatsapp.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, "");
+      if (value.length > 11) value = value.slice(0, 11);
+      
+      if (value.length > 10) {
+        // Celular: (XX) 9XXXX-XXXX
+        e.target.value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
+      } else if (value.length > 5) {
+        // Telefone fixo: (XX) XXXX-XXXX
+        e.target.value = `(${value.slice(0, 2)}) ${value.slice(2, 6)}-${value.slice(6)}`;
+      } else if (value.length > 2) {
+        e.target.value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+      } else if (value.length > 0) {
+        e.target.value = `(${value}`;
+      } else {
+        e.target.value = "";
+      }
+    });
+
+    // Evento de alteração no campo de foto
+    inputFoto.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      fileError.style.display = 'none';
+      
+      if (file) {
+        // Validação de tipo de arquivo
+        if (!file.type.startsWith('image/')) {
+          showFileError("Por favor, selecione apenas arquivos de imagem.");
+          inputFoto.value = '';
+          return;
+        }
+        
+        // Validação de tamanho (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          showFileError("A foto selecionada ultrapassa o limite de 5MB.");
+          inputFoto.value = '';
+          return;
+        }
+
+        // Sucesso na pré-seleção
+        uploadText.innerText = "Foto selecionada!";
+        filePreview.innerHTML = `<i class="fa-solid fa-check text-success"></i> ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`;
+        fileUploadContainer.style.borderColor = "#10b981";
+      } else {
+        resetUploadUI();
+      }
+    });
+
+    function showFileError(msg) {
+      fileError.innerText = msg;
+      fileError.style.display = 'block';
+      resetUploadUI();
+    }
+
+    function resetUploadUI() {
+      uploadText.innerText = "Clique ou arraste a sua foto aqui";
+      filePreview.innerText = "";
+      fileUploadContainer.style.borderColor = "var(--glass-border)";
+    }
+
+    // Submissão do Formulário
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      hideFeedback();
+      
+      // Validação do Bootstrap
+      const isFormValid = form.checkValidity();
+      
+      // Validação customizada do arquivo
+      const hasFile = inputFoto.files.length > 0;
+      if (!hasFile) {
+        fileError.innerText = "O envio de uma foto de até 5MB é obrigatório.";
+        fileError.style.display = 'block';
+      }
+      
+      if (!isFormValid || !hasFile) {
+        form.classList.add('was-validated');
+        return;
+      }
+
+      // Inicia estado de carregamento
+      setLoading(true);
+
+      const file = inputFoto.files[0];
+      const reader = new FileReader();
+      
+      reader.onload = function(event) {
+        const base64Content = event.target.result;
+        
+        // Estrutura os dados para envio ao backend GAS
+        const dados = {
+          nome: document.getElementById('nome').value.trim(),
+          whatsapp: inputWhatsapp.value.trim(),
+          endereco: document.getElementById('endereco').value.trim(),
+          foto: {
+            base64: base64Content,
+            name: file.name,
+            type: file.type
+          }
+        };
+
+        // Envia para o backend
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          google.script.run
+            .withSuccessHandler(onSuccess)
+            .withFailureHandler(onFailure)
+            .salvarFormulario(dados);
+        } else {
+          // Fallback para testes fora do ambiente do Google Apps Script
+          console.log("Enviando dados simulados:", dados);
+          setTimeout(() => {
+            onSuccess({ status: "success", message: "Simulação local concluída! No ambiente do Apps Script, estes dados teriam sido salvos na planilha e a notificação enviada por e-mail." });
+          }, 1500);
+        }
+      };
+
+      reader.onerror = function() {
+        showFeedback("error", "Erro ao processar o arquivo de imagem localmente.");
+        setLoading(false);
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    function setLoading(isLoading) {
+      if (isLoading) {
+        btnSubmit.disabled = true;
+        btnText.innerText = "Enviando...";
+        btnSpinner.style.display = "inline-block";
+      } else {
+        btnSubmit.disabled = false;
+        btnText.innerText = "Enviar Cadastro";
+        btnSpinner.style.display = "none";
+      }
+    }
+
+    function onSuccess(response) {
+      setLoading(false);
+      if (response && response.status === "success") {
+        showFeedback("success", response.message);
+        form.reset();
+        form.classList.remove('was-validated');
+        resetUploadUI();
+      } else {
+        showFeedback("error", (response && response.message) || "Ocorreu um erro desconhecido no servidor.");
+      }
+    }
+
+    function onFailure(error) {
+      setLoading(false);
+      showFeedback("error", "Erro crítico de comunicação com o servidor: " + error.message);
+    }
+
+    function showFeedback(type, message) {
+      alertFeedback.innerText = message;
+      alertFeedback.className = "alert-custom " + (type === "success" ? "feedback-success" : "feedback-error");
+      alertFeedback.style.display = "block";
+      
+      // Auto scroll para o topo do formulário onde está o alerta
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function hideFeedback() {
+      alertFeedback.style.display = "none";
+    }
+  </script>
+</body>
+</html>
