@@ -13,7 +13,7 @@ URL_WEBHOOK_GOOGLE_CHAT = "COLE_AQUI_A_URL_DO_WEBHOOK_DA_SALA"
 def processar_antigravity_em_segundo_plano(texto_usuario):
     """Roda o Antigravity sem pressa e envia o resultado via Webhook"""
     try:
-        comando = ["npx", "antigravity", "run", "--skill", "apps-script-architect", texto_usuario]
+        comando = ["npx", "antigravity", "run", "--skill", "PO", texto_usuario]
         resultado = subprocess.run(comando, capture_output=True, text=True, encoding='utf-8', shell=True)
         resposta_do_senior = resultado.stdout.strip()
         

@@ -16,5 +16,5 @@ Sua única responsabilidade é criar o arquivo de interface (geralmente `Index.h
      .withFailureHandler(function(error) { /* tratamento de erro */ })
      .nomeDaFuncaoDoServidor(dados);
 ## 4. Integração com a Skill de UX
-- Você deve ler as especificações geradas pela skill `apps-script-ux`.
+- Você deve ler as especificações geradas pela skill `ux`.
 - Quando instruído pelo Arquiteto ou pelo UX, gere variantes físicas do front-end criando múltiplos arquivos na pasta `./src` (ex: `Index_ModeloA.html`, `Index_ModeloB.html`), aplicando rigorosamente os tokens de cores e estilos de cada modelo do template Around.

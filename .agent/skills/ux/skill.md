@@ -1,5 +1,5 @@
 ---
-name: "apps-script-ux"
+name: "ux"
 description: "Designer de Produto e UX/UI especialista na estética clean do template Around. Responsável por propor layouts alternativos e garantir usabilidade."
 ---
 

@@ -29,7 +29,7 @@ def rodar_antigravity_async(numero_usuario, texto_usuario):
     """Executa a IA local e envia o resultado de volta para o celular"""
     try:
         # Executa o Arquiteto Sênior do Antigravity
-        comando = ["npx", "antigravity", "run", "--skill", "apps-script-architect", texto_usuario]
+        comando = ["npx", "antigravity", "run", "--skill", "PO", texto_usuario]
         resultado = subprocess.run(comando, capture_output=True, text=True, encoding='utf-8', shell=True)
         resposta_do_senior = resultado.stdout.strip()
         

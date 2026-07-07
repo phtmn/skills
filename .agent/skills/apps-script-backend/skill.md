@@ -8,7 +8,7 @@ description: "Desenvolvedor Backend especialista em arquivos de servidor Google 
 Sua única responsabilidade é escrever o código do lado do servidor que rodará no ambiente do Google Apps Script (GAS) conectado a planilhas, formulários ou de forma independente como um Web App.
 
 ## 1. Estrutura Obrigatória para Web Apps
-Se a arquitetura do projeto definida pelo `apps-script-architect` exigir uma interface web, você DEVE fornecer a função `doGet(e)` padrão para renderizar o arquivo HTML principal (geralmente chamado de `Index`):
+Se a arquitetura do projeto definida pelo `PO` exigir uma interface web, você DEVE fornecer a função `doGet(e)` padrão para renderizar o arquivo HTML principal (geralmente chamado de `Index`):
 
 ```javascript
 function doGet() {
